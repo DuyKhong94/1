@@ -16,6 +16,8 @@ if upload_file is not None:
 #st.write('Bạn đã upload file:', upload_file.name)
 df.columns=df.columns.str.lower().str.strip().str.replace(' ','_')
 df = df.astype(str).apply(lambda x: x.str.strip())
+df['ntcdeldatamin']=df['delntcdatamin'].astype(str)
+df['ntcdeldatamax']=df['delntcdatamax'].astype(str)
 df['test_result'] = df['test_result'].str.lower()
 #st.write("Dữ liệu đã được tải thành công!")
 passed_counts = (df['test_result']== 'passed').sum()
@@ -34,40 +36,20 @@ failure_list = {
     'portdischargecurrent',
     'delntcdata'
 }
-def detect_failure_mode(row):
-    failures = []
+ef detect_failure_mode(row):
     try:
-        if float(row['totalvoltage']) < float(row['totalvoltagemin']) and float(row['totalvoltage']) < float(row['totalvoltagemax']):
-            failures.append('totalvoltage')
-        if float(row['usbdischargevoltage']) < float(row['usbdischargevoltagemin']) and float(row['usbdischargevoltage']) < float(row['usbdischargevoltagemax']):
-            failures.append('usbdischargevoltage')
-        if float(row['usbdischargecurrent']) < float(row['usbdischargecurrentmin']) and float(row['usbdischargecurrent']) < float(row['usbdischargecurrentmax']):
-            failures.append('usbdischargecurrent')
-        if float(row['usbchargevoltage']) < float(row['usbchargevoltagemin']) and float(row['usbchargevoltage']) < float(row['usbchargevoltagemax']):
-            failures.append('usbchargevoltage')
-        if float(row['usbchargecurrent']) < float(row['usbchargecurrentmin']) and float(row['usbchargecurrent']) < float(row['usbchargecurrentmax']):
-            failures.append('usbchargecurrent')
-        if float(row['portchargevoltage']) < float(row['portchargevoltagemin']) and float(row['portchargevoltage']) < float(row['portchargevoltagemax']):
-            failures.append('portchargevoltage')
-        if float(row['portchargecurrent']) < float(row['portchargecurrentmin']) and float(row['portchargecurrent']) < float(row['portchargecurrentmax']):
-            failures.append('portchargecurrent')
-        if float(row['ledflashtime']) < float(row['ledflashtimemin']) and float(row['ledflashtime']) < float(row['ledflashtimemax']):
-            failures.append('ledflashtime')
-        if float(row['leddutycycle']) < float(row['leddutycyclemin']) and float(row['leddutycycle']) < float(row['leddutycyclemax']):
-            failures.append('leddutycycle')
-        if float(row['portdischargevoltage']) < float(row['portdischargevoltagemin']) and float(row['portdischargevoltage']) < float(row['portdischargevoltagemax']):
-            failures.append('portdischargevoltage')
-        if float(row['portdischargecurrent']) < float(row['portdischargecurrentmin']) and float(row['portdischargecurrent']) < float(row['portdischargecurrentmax']):
-            failures.append('portdischargecurrent')
-        if float(row['delntcdata']) < float(row['ntcdeldatamin']) and float(row['delntcdata']) < float(row['ntcdeldatamax']):
-            failures.append('delntcdata')
+        for item in failure_list:
+            min_col = item + 'min'
+            max_col = item + 'max'
+            if min_col in row and max_col in row:
+                val = float(row[item])
+                val_min = float(row[min_col])
+                val_max = float(row[max_col])
+                if val < val_min or val > val_max:
+                    return item
+        return 'unknown'
     except:
         return 'invalid'
-    
-    if failures:
-        return failures[0]  # chỉ lấy lỗi đầu tiên
-    else:
-        return 'unknown'
 
 df['failure_mode'] = df.apply(detect_failure_mode, axis=1)
 st.sidebar.header("Thống kê hàng lỗi")
