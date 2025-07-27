@@ -36,7 +36,7 @@ failure_list = {
     'portdischargecurrent',
     'delntcdata'
 }
-ef detect_failure_mode(row):
+def detect_failure_mode(row):
     try:
         for item in failure_list:
             min_col = item + 'min'
