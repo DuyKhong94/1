@@ -16,9 +16,9 @@ if upload_file is not None:
 #st.write('Bạn đã upload file:', upload_file.name)
 df.columns=df.columns.str.lower().str.strip().str.replace(' ','_')
 df = df.astype(str).apply(lambda x: x.str.strip())
-df['ntcdeldatamin']=df['delntcdatamin'].astype(str)
-df['ntcdeldatamax']=df['delntcdatamax'].astype(str)
 df['test_result'] = df['test_result'].str.lower()
+df.rename(columns={'ntcdeldatamin': 'delntcdatamin'}, inplace=True)
+df.rename(columns={'ntcdeldatamax': 'delntcdatamax'}, inplace=True)
 #st.write("Dữ liệu đã được tải thành công!")
 passed_counts = (df['test_result']== 'passed').sum()
 failed_counts = (df['test_result']== 'failed').sum()
@@ -34,9 +34,13 @@ failure_list = {
     'leddutycycle',
     'portdischargevoltage',
     'portdischargecurrent',
-    'delntcdata'
+    'delntcdata',
 }
+
 def detect_failure_mode(row):
+    if row['test_result'] == 'passed':
+        return None
+    failures = []
     try:
         for item in failure_list:
             min_col = item + 'min'
@@ -46,11 +50,15 @@ def detect_failure_mode(row):
                 val_min = float(row[min_col])
                 val_max = float(row[max_col])
                 if val < val_min or val > val_max:
-                    return item
+                    failures.append(item)
+        if failures:
+            return failures[0]
         return 'unknown'
     except:
         return 'invalid'
 
+df['failure_mode'] = df.apply(detect_failure_mode, axis=1)
+failure_counts = df['failure_mode'].value_counts()
 df['failure_mode'] = df.apply(detect_failure_mode, axis=1)
 st.sidebar.header("Thống kê hàng lỗi")
 result_options = ['All'] + sorted(df['test_result'].unique().tolist())
@@ -74,7 +82,7 @@ st.sidebar.header("Thống kê mode lỗi")
 
 
 
-select_failure_mode = st.sidebar.selectbox("Mode lỗi", ['all'] + sorted(list(failure_list)))
+select_failure_mode = st.sidebar.selectbox("Mode lỗi", ['all', 'unknown'] + sorted(list(failure_list)))
 if select_failure_mode == 'all':
     df_selection = df_selection[df_selection['test_result'] == 'failed']
 else:
@@ -82,19 +90,17 @@ else:
 
 
 
-failre_counts = df_selection[df_selection['failure_mode'] != 'unknown']['failure_mode'].value_counts()
-
 
 plt.figure(figsize=(10, 6))
 plt.subplot(2,2,1)
-plt.title("Thống kê mode lỗi")
-bars =plt.bar(failre_counts.index, failre_counts.values, color='orange')
+plt.title("Thống kê mode lỗi")  
+bars =plt.bar(failure_counts.index, failure_counts.values, color='orange')
 for bar in bars:
     plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2,
              str(bar.get_height()), ha='center', fontsize=11)
 
 plt.xticks(rotation=90)
-plt.ylim(0, failre_counts.max() + 10)
+plt.ylim(0, failure_counts.max() + 10)
 plt.ylabel('Số lượng')
 
 plt.subplot(2,2,2)
@@ -118,5 +124,9 @@ st.download_button(
     file_name="bieudo_sanluong.png",
     mime="image/png"
 )
+def highlight_failure(val):
+    if val != 'unknown' and val != 'invalid':
+        return 'background-color: #ffa07a'
+    return ''
 with st.expander("📋 Hiện/ẩn bảng dữ liệu"):
-    st.dataframe(df_selection)
+    st.dataframe(df_selection.style.applymap(highlight_failure, subset=['failure_mode']))
