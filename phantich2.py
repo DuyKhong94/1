@@ -36,7 +36,6 @@ failure_list = {
     'portdischargecurrent',
     'delntcdata',
 }
-
 def detect_failure_mode(row):
     if row['test_result'] == 'passed':
         return None
@@ -52,14 +51,17 @@ def detect_failure_mode(row):
                 if val < val_min or val > val_max:
                     failures.append(item)
         if failures:
-            return failures[0]
+            return ', '.join(failures)
         return 'unknown'
     except:
         return 'invalid'
 
 df['failure_mode'] = df.apply(detect_failure_mode, axis=1)
-failure_counts = df['failure_mode'].value_counts()
-df['failure_mode'] = df.apply(detect_failure_mode, axis=1)
+df['last_failure_mode'] = df['failure_mode'].apply(
+    lambda x: x.split(',')[-1].strip() if pd.notnull(x) else x
+)
+failure_counts = df['last_failure_mode'].value_counts()
+
 st.sidebar.header("Thống kê hàng lỗi")
 result_options = ['All'] + sorted(df['test_result'].unique().tolist())
 select_mode = st.sidebar.selectbox("Kết quả", result_options)
