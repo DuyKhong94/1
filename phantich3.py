@@ -4,7 +4,7 @@ import streamlit as st
 
 
 st.set_page_config(page_title="MR USD Dollar Cost Analysis")
-cost_file="D:\Python\Material saving study cost Oct2024.xlsb"
+cost_file = "https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true""
 df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
 
 df.columns = df.columns.str.lower().str.strip().str.replace(' ', '_')
