@@ -11,7 +11,7 @@ st.title("Daily Production Statistics (DPS) Analysis")
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.image("https://raw.githubusercontent.com/DuyKhong94/1/main/logo.png", width=300, caption="Logo")
+    st.image("https://raw.githubusercontent.com/DuyKhong94/1/main/logo.png", width=300, caption="RYOBI PE ACBP Engineering")
     uploaded_file = st.file_uploader("Chọn file dữ liệu", type=["xlsx"])
     if uploaded_file:
         sheet_names = pd.ExcelFile(uploaded_file, engine="openpyxl").sheet_names
@@ -126,4 +126,5 @@ with col3:
         except Exception as e:
             st.error(f"Lỗi khi đọc file: {e}")
     else:
+
         st.warning("Vui lòng tải lên file Excel trước.")    
