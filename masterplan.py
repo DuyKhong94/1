@@ -5,7 +5,9 @@ col1, col2, col3 = st.columns([2, 2, 2])
 
     
 with col1:
-    st.image("D:\Python\Masterplan\cert-ssblck-belt.jpg", width=500)
+    img_url = "https://raw.githubusercontent.com/DuyKhong94/1/8623680f05ca030f6fc8bdbff4041d7abd6a6658/cert-ssblck-belt.jpg"
+    st.image(img_url, width=500)
+    
     st.title("MASTER PLAN & TO-DO LIST")
     st.write("""This app was developed by Khổng Trung Duy - Certified Six Sigma Black Belt""")
     st.write("""American Society for Quality (ASQ)- ID: 26844""")
@@ -133,4 +135,5 @@ with col3:
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
         #st.dataframe(df2mr)
+
         
