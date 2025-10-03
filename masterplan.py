@@ -132,8 +132,10 @@ with col3:
             plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
         plt.title('MR Amount Ranking')
         plt.xlabel('Line')  
+        plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
         #st.dataframe(df2mr)
 
         
+
