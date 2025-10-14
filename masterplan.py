@@ -142,7 +142,7 @@ with col3:
         st.pyplot(plt)
         #st.dataframe(df2mr)
 with col3:
-    plt.figure(figsize=(3, 3))
+    plt.figure(figsize=(2, 2))
     bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
     for bar in bars:
         height=bar.get_height()
@@ -154,6 +154,7 @@ with col3:
     plt.ylabel('Total Cost ($)')
     st.pyplot(plt)
         
+
 
 
 
