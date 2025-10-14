@@ -40,13 +40,18 @@ with col1:
         .sort_values('QTY', ascending=False)
         .head(5)
         )
-       
+        top_model1= filtered_df
+        .groupby(["TTI Model No"], as_index=False)['QTY']
+        .sum()
+        .sort_values('QTY', ascending=False)
+        .head(5)
+        )
         top5_df=pd.DataFrame(top_model)
 
         #QTY=filtered_df.sort_values('QTY', ascending=False).head(5)
         st.write("Top 5 Models need focus:")
         st.dataframe(top5_df)
-   
+        top5_df1=pd.DataFrame(top_model1)
 with col2:  
     st.title("TO-DO LIST")      
     st.markdown(
@@ -66,7 +71,7 @@ with col2:
         st.write(item)
     import matplotlib.pyplot as plt
 
-    bars=plt.bar(top5_df['TTI Model No'], top5_df['QTY'], color='green', edgecolor='black', width=0.4)
+    bars=plt.bar(top5_df1['TTI Model No'], top5_df1['QTY'], color='green', edgecolor='black', width=0.4)
     for bar in bars:
         height=bar.get_height()
         width=bar.get_width()
@@ -138,5 +143,6 @@ with col3:
         #st.dataframe(df2mr)
 
         
+
 
 
