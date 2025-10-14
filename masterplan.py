@@ -111,7 +111,7 @@ with col3:
         total_cost = df2mr['Price'].sum()
         df21 = df2[df2['Date'].between(selected_mr_datefrom, selected_mr_dateto)]
         df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(10)
-        df2leader=(df21.groupby("Leader",as_index=False).["Price"].sum()).sort_values('Price', ascending=False).head(10)
+        df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(10)
         st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
         
     with col2:
@@ -153,6 +153,7 @@ with col3:
                 plt.ylabel('Total Cost ($)')
                 st.pyplot(plt)
         
+
 
 
 
