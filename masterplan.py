@@ -38,7 +38,7 @@ with col1:
         .groupby(["TTI Model No", "Curent line"], as_index=False)['QTY']
         .sum()
         .sort_values('QTY', ascending=False)
-        .head(5)
+        .head(10)
         )
         top_model1= (filtered_df
         .groupby(["TTI Model No"], as_index=False)['QTY']
@@ -143,6 +143,7 @@ with col3:
         #st.dataframe(df2mr)
 
         
+
 
 
 
