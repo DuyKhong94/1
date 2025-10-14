@@ -143,7 +143,7 @@ with col3:
             height=bar.get_height()
             width=bar.get_width()
             plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
-        plt.title('AC PK BW MR Amount Ranking')
+        plt.title('AC PK BW Scrap Ranking by Line')
         plt.xlabel('Line')  
         plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
@@ -157,7 +157,7 @@ with col3:
             height=bar.get_height()
             width=bar.get_width()
             plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
-        plt.title('AC PK BW MR Amount Ranking')
+        plt.title('AC PK BW Scrap Ranking by Leader')
         plt.xlabel('Leader')  
         plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
@@ -170,7 +170,7 @@ with col3:
         startangle=90,
         counterclock=False
         )
-        plt.title("AC PK BW Scrap Cost Ranking by Leader")
+        plt.title("AC PK BW Scrap Contribute by Leader")
         plt.legend(
         df_pie["Leader"],
         loc="lower center",
@@ -180,6 +180,7 @@ with col3:
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
