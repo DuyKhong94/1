@@ -157,7 +157,7 @@ with col3:
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
     with col2:
-        plt.figure(figsize=(4, 4))  # kích thước biểu đồ
+        plt.figure(figsize=(5, 5))  # kích thước biểu đồ
         plt.pie(
         total_cost_leader["Price"],                   # dữ liệu (giá trị cost)
         labels=total_cost_leader["Leader"],           # nhãn (tên leader)
@@ -168,6 +168,7 @@ with col3:
         plt.title("Material Return Cost by Leader")
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
