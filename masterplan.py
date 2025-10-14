@@ -142,17 +142,18 @@ with col3:
         st.pyplot(plt)
         #st.dataframe(df2mr)
         plt.figure(figsize=(3, 3))
-                bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
-                for bar in bars:
-                    height=bar.get_height()
-                    width=bar.get_width()
-                    plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
-                plt.title('MR Amount Ranking')
-                plt.xlabel('Leader')  
-                plt.xticks(rotation=90)
-                plt.ylabel('Total Cost ($)')
-                st.pyplot(plt)
+        bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
+        for bar in bars:
+            height=bar.get_height()
+            width=bar.get_width()
+            plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
+        plt.title('MR Amount Ranking')
+        plt.xlabel('Leader')  
+        plt.xticks(rotation=90)
+        plt.ylabel('Total Cost ($)')
+        st.pyplot(plt)
         
+
 
 
 
