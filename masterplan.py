@@ -175,10 +175,12 @@ with col3:
         df_pie["Leader"],
         loc="lower center",
         bbox_to_anchor=(1, 0.5),
-        title="Leader"
+        title="Leader",
+        fontsize=5
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
