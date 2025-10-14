@@ -156,22 +156,25 @@ with col3:
         plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
-with col2:
-    plt.figure(figsize=(5, 5))  # kích thước biểu đồ
-    plt.pie(
-    total_cost_leader["Price"],                   # dữ liệu (giá trị cost)
-    autopct='%1.1f%%',                            # hiển thị % có 1 chữ số thập phân
-    startangle=90,                                # xoay góc bắt đầu cho đẹp
-    counterclock=False                            # vẽ theo chiều kim đồng hồ
-    )
-    plt.title("Material Return Cost by Leader")
-    plt.legend(
-    total_cost_leader["Leader"], 
-    loc="center left", 
-    bbox_to_anchor=(1, 0.5)    # đẩy legend ra ngoài bên phải
-    )
-    plt.tight_layout()
-    st.pyplot(plt)
+    with col2:
+        plt.figure(figsize=(6, 5))
+        plt.pie(
+        total_cost_leader["Price"],
+        autopct='%1.1f%%',
+        startangle=90,
+        counterclock=False
+        )
+        plt.title("Material Return Cost by Leader")
+
+        # Dời legend ra ngoài bên phải
+        plt.legend(
+        total_cost_leader["Leader"],
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        title="Leader"
+        )
+    
+
 
 
 
