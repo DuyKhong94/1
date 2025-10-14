@@ -173,7 +173,8 @@ with col3:
         bbox_to_anchor=(1, 0.5),
         title="Leader"
         )
-    
+        st.pyplot(plt)
+
 
 
 
