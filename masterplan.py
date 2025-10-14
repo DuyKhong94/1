@@ -160,14 +160,15 @@ with col3:
         plt.figure(figsize=(5, 5))  # kích thước biểu đồ
         plt.pie(
         total_cost_leader["Price"],                   # dữ liệu (giá trị cost)
-        labels=total_cost_leader["Leader"],           # nhãn (tên leader)
         autopct='%1.1f%%',                            # hiển thị % có 1 chữ số thập phân
         startangle=90,                                # xoay góc bắt đầu cho đẹp
         counterclock=False                            # vẽ theo chiều kim đồng hồ
         )
         plt.title("Material Return Cost by Leader")
         plt.tight_layout()
+        plt.legend()
         st.pyplot(plt)
+
 
 
 
