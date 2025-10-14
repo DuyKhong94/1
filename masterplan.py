@@ -112,6 +112,8 @@ with col3:
         df21 = df2[df2['Date'].between(selected_mr_datefrom, selected_mr_dateto)]
         df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(10)
         df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
+        total_cost=df21["Price"].sum()
+        total_cost_leader=df21.groupby("Leader",as_index=False)["Price"].sum()
         st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
         
     with col2:
@@ -154,7 +156,19 @@ with col3:
         plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
-        
+    with col2:
+        plt.figure(figsize=(4, 4))  # kích thước biểu đồ
+        plt.pie(
+        total_cost_leader["Price"],                   # dữ liệu (giá trị cost)
+        labels=total_cost_leader["Leader"],           # nhãn (tên leader)
+        autopct='%1.1f%%',                            # hiển thị % có 1 chữ số thập phân
+        startangle=90,                                # xoay góc bắt đầu cho đẹp
+        counterclock=False                            # vẽ theo chiều kim đồng hồ
+        )
+        plt.title("Material Return Cost by Leader")
+        plt.tight_layout()
+        st.pyplot(plt)
+
 
 
 
