@@ -165,9 +165,14 @@ with col3:
         counterclock=False                            # vẽ theo chiều kim đồng hồ
         )
         plt.title("Material Return Cost by Leader")
+        plt.legend(
+        total_cost_leader["Leader"], 
+        loc="center left", 
+        bbox_to_anchor=(1, 0.5)    # đẩy legend ra ngoài bên phải
+        )
         plt.tight_layout()
-        plt.legend()
         st.pyplot(plt)
+
 
 
 
