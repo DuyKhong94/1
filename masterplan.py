@@ -172,9 +172,15 @@ with col3:
         counterclock=False
         )
         plt.title("Material Return Cost by Leader")
-        plt.legend()
+        plt.legend(
+        df_pie["Leader"],
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        title="Leader"
+        )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
