@@ -114,8 +114,14 @@ with col3:
         df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
         total_cost=df21["Price"].sum()
         total_cost_leader=df21.groupby("Leader",as_index=False)["Price"].sum()
+        total_cost_leader = total_cost_leader.sort_values("Price", ascending=False)
+        top5 = total_cost_leader.head(5)
+        others = pd.DataFrame({
+        "Leader": ["Others"],
+        "Price": [total_cost_leader["Price"].iloc[5:].sum()]
+        })
         st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
-        
+        df_pie = pd.concat([top5, others], ignore_index=True)
     with col2:
         completed_tasks = (df1['WI status']=="Done").sum()
         total_tasks = len(df1)
@@ -159,21 +165,16 @@ with col3:
     with col2:
         plt.figure(figsize=(6, 5))
         plt.pie(
-        total_cost_leader["Price"],
+        df_pie["Price"],
+        labels=df_pie["Leader"],
         autopct='%1.1f%%',
         startangle=90,
         counterclock=False
         )
         plt.title("Material Return Cost by Leader")
-
-        # Dời legend ra ngoài bên phải
-        plt.legend(
-        total_cost_leader["Leader"],
-        loc="center left",
-        bbox_to_anchor=(1, 0.5),
-        title="Leader"
-        )
+        plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
