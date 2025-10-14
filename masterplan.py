@@ -151,7 +151,7 @@ with col3:
         #st.dataframe(df2mr)
 with col3:
     with col1:
-        plt.figure(figsize=(5, 5))
+        plt.figure(figsize=(4, 4))
         bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
         for bar in bars:
             height=bar.get_height()
@@ -174,12 +174,13 @@ with col3:
         plt.title("Material Return Cost by Leader")
         plt.legend(
         df_pie["Leader"],
-        loc="center left",
+        loc="lower center",
         bbox_to_anchor=(1, 0.5),
         title="Leader"
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
