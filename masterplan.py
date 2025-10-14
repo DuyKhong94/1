@@ -166,7 +166,6 @@ with col3:
         plt.figure(figsize=(5, 5))
         plt.pie(
         df_pie["Price"],
-        labels=df_pie["Leader"],
         autopct='%1.1f%%',
         startangle=90,
         counterclock=False
@@ -180,6 +179,7 @@ with col3:
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
