@@ -163,7 +163,7 @@ with col3:
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
     with col2:
-        plt.figure(figsize=(6, 5))
+        plt.figure(figsize=(5, 5))
         plt.pie(
         df_pie["Price"],
         labels=df_pie["Leader"],
@@ -172,8 +172,10 @@ with col3:
         counterclock=False
         )
         plt.title("Material Return Cost by Leader")
+        plt.legend()
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
