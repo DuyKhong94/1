@@ -49,7 +49,7 @@ with col1:
         top5_df=pd.DataFrame(top_model)
 
         #QTY=filtered_df.sort_values('QTY', ascending=False).head(5)
-        st.write("Top 5 Models need focus:")
+        st.write("Top 10 Production line need focus:")
         st.dataframe(top5_df)
         top5_df1=pd.DataFrame(top_model1)
 with col2:  
@@ -180,6 +180,7 @@ with col3:
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
