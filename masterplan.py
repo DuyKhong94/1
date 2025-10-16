@@ -110,7 +110,7 @@ with col3:
         df2mr = df2[(df2['Line'] == selected_mr_model) & (df2['Date'].between(selected_mr_datefrom, selected_mr_dateto))]
         total_cost = df2mr['Price'].sum()
         df21 = df2[df2['Date'].between(selected_mr_datefrom, selected_mr_dateto)]
-        df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(10)
+        df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
         df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
         total_cost=df21["Price"].sum()
         total_cost_leader=df21.groupby("Leader",as_index=False)["Price"].sum()
@@ -180,6 +180,7 @@ with col3:
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
