@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
-col1, col2 = st.column([1,1])
+col1, col2 = st.columns([1,1])
 with col1:
     st.set_page_config(page_title="MR USD Dollar Cost Analysis")
     cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
@@ -120,4 +120,5 @@ with col1:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
+
 
