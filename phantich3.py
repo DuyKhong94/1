@@ -120,5 +120,8 @@ with col1:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
+with col2:
+    
+
 
 
