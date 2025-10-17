@@ -28,21 +28,6 @@ with col2:
         st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
         df_pie = pd.concat([top5, others], ignore_index=True)
     with col2:
-    
-        completed_tasks = (df1['WI status']=="Done").sum()
-        total_tasks = len(df1)
-        #st.write(f"Completed Tasks: {completed_tasks}")
-        #st.write(f"Total Tasks: {total_tasks}")
-        plt.figure(figsize=(2, 2))
-        plt.pie([completed_tasks, total_tasks - completed_tasks], labels=['Completed', 'Pending'], autopct='%1.1f%%', colors=['#4CAF50', '#FF5733'],textprops={'fontsize': 5})
-        
-        plt.tight_layout()
-        st.pyplot(plt)
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(
-        "<hr style='border:2px solid #000000; border-radius:5px;'>", 
-        unsafe_allow_html=True
-        )
         plt.figure(figsize=(3, 3))
         bars=plt.bar(df2total['Line'], df2total['Price'], color='skyblue', edgecolor='black', width=0.4)
         for bar in bars:
@@ -203,6 +188,7 @@ with col1:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
+
 
 
 
