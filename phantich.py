@@ -19,7 +19,7 @@ with col1:
         df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
         df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
         total_cost=df21["Price"].sum()
-        total_cost_leader=df21.groupby("Leader",as_index=False)["Price"].sum()
+        total_cost_leader=df2.groupby("Leader",as_index=False)["Price"].sum()
         total_cost_leader = total_cost_leader.sort_values("Price", ascending=False)
         top5 = total_cost_leader.head(5)
         others = pd.DataFrame({
@@ -189,6 +189,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
