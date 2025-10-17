@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="MR Analysis & Ranking")
 col1,col2=st.columns([1,1])
 with col1:
-    col1, col2= st.columns([1,1])
-    with col1:
+    
         st.title("MR Ranking Analysis")    
         df2 = pd.read_excel(r'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD6Hev7ya8IQPQTGkvJzFMlkaE5UpxAPklzrE0fGFNTC1VS4brdqH4BWeyzgeELiCED8B8X5p3T64h/pub?output=xlsx', sheet_name="MR")
         selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
@@ -49,7 +48,7 @@ with col1:
         plt.xticks(rotation=90)
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
-    with col2:
+  
         plt.figure(figsize=(5, 5))
         plt.pie(
         df_pie["Price"],
@@ -186,6 +185,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
