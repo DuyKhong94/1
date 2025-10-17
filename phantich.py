@@ -7,7 +7,7 @@ col1,col2=st.columns([1,1])
 with col1:
     col1, col2= st.columns([1,1])
     with col1:
-        st.title("Material Return Cost Monitor")    
+        st.title("MR Ranking Analysis")    
         df2 = pd.read_excel(r'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD6Hev7ya8IQPQTGkvJzFMlkaE5UpxAPklzrE0fGFNTC1VS4brdqH4BWeyzgeELiCED8B8X5p3T64h/pub?output=xlsx', sheet_name="MR")
         selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
         selected_mr_datefrom=st.selectbox("Select a start date", df2['Date'].unique())
@@ -95,8 +95,8 @@ with col2:
     
             st.success(f"✅ Đã tìm thấy mã: `{item_number}`")
             st.write(f"📦 **Mô tả**: {desc}")
-            st.write(f"💵 **Đơn giá**: {price:,.0f} $USD")
-            st.write(f"🧾 **Thành tiền**: {total:,.0f} $USD")
+            st.write(f"💵 **Đơn giá**: {price:,.5f} $USD")
+            st.write(f"🧾 **Thành tiền**: {total:,.5f} $USD")
     
             # Ghi vào lịch sử tra cứu
             if "history" not in st.session_state:
@@ -184,6 +184,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
