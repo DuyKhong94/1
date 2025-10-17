@@ -123,8 +123,8 @@ with col2:
             total = price * job_quantity
     
             st.success(f"✅ Đã tìm thấy mã: `{model_number}`")
-            st.write(f"💵 **Đơn giá**: {price:,.0f} $USD")
-            st.write(f"🧾 **Thành tiền**: {total:,.0f} $USD")
+            st.write(f"💵 **Đơn giá**: {price:,.5f} $USD")
+            st.write(f"🧾 **Thành tiền**: {total:,.5f} $USD")
     
             # Ghi vào lịch sử tra cứu
             if "history1" not in st.session_state:
@@ -159,7 +159,7 @@ with col2:
     bars=plt.bar(item_list, df_history.groupby('Mã linh kiện')['Thành tiền ($USD)'].sum().loc[item_list])
     for bar in bars:
         yval = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.0f}", ha='center', va='bottom')
+        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.5f}", ha='center', va='bottom')
     plt.title("Chi phí theo mã linh kiện")
     plt.xlabel("Mã linh kiện")
     plt.ylabel("Thành tiền ($USD)")
@@ -168,7 +168,7 @@ with col2:
     bars1 = plt.bar(['Tổng giá trị', 'Total scrapped'], [total_job_cost,total_cost], color=['blue', 'red'])
     for bar in bars1:
         yval = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.0f}", ha='center', va='bottom')
+        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.5f}", ha='center', va='bottom')
     plt.title("Chi phí scrap tính theo tổng giá trị job")
     plt.ylabel("USD$")
     plt.subplot(2,2,3)
@@ -183,6 +183,7 @@ with col2:
     )
     plt.tight_layout()
     st.pyplot(plt)
-    st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
+    st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
