@@ -70,6 +70,7 @@ with col1:
         plt.tight_layout()
         st.pyplot(plt)        
 with col2: 
+    st.title("MR USD Dollar Cost Analysis")
     st.divider()
     cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
     df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
@@ -81,7 +82,7 @@ with col2:
     df['item'] = df['item'].astype(str).str.strip().str.lstrip("'").str.upper()
     df_cleaned= df[['item','description','unit_price']].copy()
     
-    st.title("MR USD Dollar Cost Analysis")
+    
     col1,col2=st.columns(2)
     with col1:
         item_number = st.text_input("nhập mã linh kiện").strip().upper()
@@ -188,6 +189,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
