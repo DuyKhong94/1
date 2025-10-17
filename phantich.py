@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
-
+st.set_page_config(page_title="MR Analysis & Ranking")
 col1,col2=st.columns([1,1])
 with col1:
     col1, col2= st.columns([1,1])
@@ -68,7 +68,7 @@ with col1:
         plt.tight_layout()
         st.pyplot(plt)        
 with col2: 
-    st.set_page_config(page_title="MR USD Dollar Cost Analysis")
+    
     cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
     df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
     
@@ -87,7 +87,8 @@ with col2:
         quantity = st.number_input("nhập số lượng", min_value=1, value=1, step=1)
         
     if st.button('📌 Tra cứu'):
-        result = df[df['item'] == item_number]
+        if item_number and quantity:
+            result = df[df['item'] == item_number]
         if not result.empty:
             price = result.iloc[0]['unit_price']
             desc = result.iloc[0]['description']
@@ -117,7 +118,8 @@ with col2:
     with col4:
         job_quantity = st.number_input("nhập số lượng job", min_value=1, value=1, step=1)
     if st.button('📌 Tra cứu giá console'):
-        result1 = df[df['item'] == model_number]
+        if model_number and job_quantity:
+            result1 = df[df['item'] == model_number]
         if not result1.empty:
             price = result1.iloc[0]['unit_price']
             total = price * job_quantity
@@ -184,6 +186,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
