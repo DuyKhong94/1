@@ -4,7 +4,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 col1, col2 = st.columns([1,1])
 
-with col2:
+with col1:
     col1,col2=st.columns([1,1])
     with col1:
         st.title("Material Return Cost Monitor")
@@ -40,38 +40,38 @@ with col2:
         plt.ylabel('Total Cost ($)')
         st.pyplot(plt)
         #st.dataframe(df2mr)
-with col2:
-    with col1:
-        plt.figure(figsize=(4, 4))
-        bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
-        for bar in bars:
-            height=bar.get_height()
-            width=bar.get_width()
-            plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
-        plt.title('AC PK BW Scrap Ranking by Leader')
-        plt.xlabel('Leader')  
-        plt.xticks(rotation=90)
-        plt.ylabel('Total Cost ($)')
-        st.pyplot(plt)
     with col2:
-        plt.figure(figsize=(5, 5))
-        plt.pie(
-        df_pie["Price"],
-        autopct='%1.1f%%',
-        startangle=90,
-        counterclock=False
-        )
-        plt.title("AC PK BW Scrap Contribute by Leader")
-        plt.legend(
-        df_pie["Leader"],
-        loc="lower center",
-        bbox_to_anchor=(1, 0.5),
-        title="Leader",
-        fontsize=5
-        )
-        plt.tight_layout()
-        st.pyplot(plt)
-with col1:
+        with col1:
+            plt.figure(figsize=(4, 4))
+            bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
+            for bar in bars:
+                height=bar.get_height()
+                width=bar.get_width()
+                plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
+            plt.title('AC PK BW Scrap Ranking by Leader')
+            plt.xlabel('Leader')  
+            plt.xticks(rotation=90)
+            plt.ylabel('Total Cost ($)')
+            st.pyplot(plt)
+        with col2:
+            plt.figure(figsize=(5, 5))
+            plt.pie(
+            df_pie["Price"],
+            autopct='%1.1f%%',
+            startangle=90,
+            counterclock=False
+            )
+            plt.title("AC PK BW Scrap Contribute by Leader")
+            plt.legend(
+            df_pie["Leader"],
+            loc="lower center",
+            bbox_to_anchor=(1, 0.5),
+            title="Leader",
+            fontsize=5
+            )
+            plt.tight_layout()
+            st.pyplot(plt)
+with col2:
     st.set_page_config(page_title="MR USD Dollar Cost Analysis")
     cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
     df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
@@ -188,6 +188,7 @@ with col1:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
+
 
 
 
