@@ -9,7 +9,7 @@ with col1:
         st.title("MR Ranking Analysis")  
         st.divider()
         df2 = pd.read_excel(r'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD6Hev7ya8IQPQTGkvJzFMlkaE5UpxAPklzrE0fGFNTC1VS4brdqH4BWeyzgeELiCED8B8X5p3T64h/pub?output=xlsx', sheet_name="MR")
-        st.container()
+        with st.container():
             selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
             selected_mr_datefrom=st.selectbox("Select a start date", df2['Date'].unique())
             selected_mr_dateto=st.selectbox("Select a end date", df2['Date'].unique())
@@ -188,6 +188,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
