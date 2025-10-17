@@ -121,7 +121,86 @@ with col1:
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
 with col2:
+    col1,col2=st.columns([1,1])
+    with col1:
+        st.title("Material Return Cost Monitor")
+        df2 = pd.read_excel(r'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD6Hev7ya8IQPQTGkvJzFMlkaE5UpxAPklzrE0fGFNTC1VS4brdqH4BWeyzgeELiCED8B8X5p3T64h/pub?output=xlsx', sheet_name="MR")
+        selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
+        selected_mr_datefrom=st.selectbox("Select a start date", df2['Date'].unique())
+        selected_mr_dateto=st.selectbox("Select a end date", df2['Date'].unique())
+        df2mr = df2[(df2['Line'] == selected_mr_model) & (df2['Date'].between(selected_mr_datefrom, selected_mr_dateto))]
+        total_cost = df2mr['Price'].sum()
+        df21 = df2[df2['Date'].between(selected_mr_datefrom, selected_mr_dateto)]
+        df2total = (df21.groupby("Line", as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
+        df2leader=(df21.groupby("Leader",as_index=False)["Price"].sum()).sort_values('Price', ascending=False).head(5)
+        total_cost=df21["Price"].sum()
+        total_cost_leader=df21.groupby("Leader",as_index=False)["Price"].sum()
+        total_cost_leader = total_cost_leader.sort_values("Price", ascending=False)
+        top5 = total_cost_leader.head(5)
+        others = pd.DataFrame({
+        "Leader": ["Others"],
+        "Price": [total_cost_leader["Price"].iloc[5:].sum()]
+        })
+        st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
+        df_pie = pd.concat([top5, others], ignore_index=True)
+    with col2:
     
-
+        completed_tasks = (df1['WI status']=="Done").sum()
+        total_tasks = len(df1)
+        #st.write(f"Completed Tasks: {completed_tasks}")
+        #st.write(f"Total Tasks: {total_tasks}")
+        plt.figure(figsize=(2, 2))
+        plt.pie([completed_tasks, total_tasks - completed_tasks], labels=['Completed', 'Pending'], autopct='%1.1f%%', colors=['#4CAF50', '#FF5733'],textprops={'fontsize': 5})
+        
+        plt.tight_layout()
+        st.pyplot(plt)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(
+        "<hr style='border:2px solid #000000; border-radius:5px;'>", 
+        unsafe_allow_html=True
+        )
+        plt.figure(figsize=(3, 3))
+        bars=plt.bar(df2total['Line'], df2total['Price'], color='skyblue', edgecolor='black', width=0.4)
+        for bar in bars:
+            height=bar.get_height()
+            width=bar.get_width()
+            plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
+        plt.title('AC PK BW Scrap Ranking by Line')
+        plt.xlabel('Line')  
+        plt.xticks(rotation=90)
+        plt.ylabel('Total Cost ($)')
+        st.pyplot(plt)
+        #st.dataframe(df2mr)
+with col2:
+    with col1:
+        plt.figure(figsize=(4, 4))
+        bars=plt.bar(df2leader['Leader'], df2leader['Price'], color='skyblue', edgecolor='black', width=0.4)
+        for bar in bars:
+            height=bar.get_height()
+            width=bar.get_width()
+            plt.text(bar.get_x()+width/2, height*1.01,f"${height:,.2f}", ha='center', fontsize=7)
+        plt.title('AC PK BW Scrap Ranking by Leader')
+        plt.xlabel('Leader')  
+        plt.xticks(rotation=90)
+        plt.ylabel('Total Cost ($)')
+        st.pyplot(plt)
+    with col2:
+        plt.figure(figsize=(5, 5))
+        plt.pie(
+        df_pie["Price"],
+        autopct='%1.1f%%',
+        startangle=90,
+        counterclock=False
+        )
+        plt.title("AC PK BW Scrap Contribute by Leader")
+        plt.legend(
+        df_pie["Leader"],
+        loc="lower center",
+        bbox_to_anchor=(1, 0.5),
+        title="Leader",
+        fontsize=5
+        )
+        plt.tight_layout()
+        st.pyplot(plt)
 
 
