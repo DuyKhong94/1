@@ -1,13 +1,13 @@
 # Project: Material Scrap Annual Value Dash Board
 
 ## Table of contents:
-0. [Introduction](#0.Introduction)
-1. [Understand](#1.Understand what needs)
-2. [Data Preprocessing](#2.Data Preprocessing)
-3. [Data Analytics](#3.Data Analytics)
-4. [Data Visualization](#4.Data Visualization)
-5. [Automation](#5.Automation Report)
-6. [Project](#6.Project Guide Line)
+0. [Introduction](#introduction)
+1. [Understand what needs](#understand-what-needs)
+2. [Data Preprocessing](#data-preprocessing)
+3. [Data Analytics](#data-analytics)
+4. [Data Visualization](#data-visualization)
+5. [Automation Report](#automation-report)
+6. [Project Guide Line](#project-guide-line)
 
 # Introduction
 Hello everyone
