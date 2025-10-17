@@ -1,4 +1,4 @@
-# Project: Material Scrap Annual Value Dash Board
+# Project: Annual Material Scrap Value Dash Board
 
 ## Table of contents:
 0. [Introduction](#introduction)
