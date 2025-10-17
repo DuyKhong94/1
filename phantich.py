@@ -6,11 +6,13 @@ st.set_page_config(page_title="MR Analysis & Ranking")
 col1,col2=st.columns([1,1])
 with col1:
     
-        st.title("MR Ranking Analysis")    
+        st.title("MR Ranking Analysis")  
+        st.divider()
         df2 = pd.read_excel(r'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD6Hev7ya8IQPQTGkvJzFMlkaE5UpxAPklzrE0fGFNTC1VS4brdqH4BWeyzgeELiCED8B8X5p3T64h/pub?output=xlsx', sheet_name="MR")
-        selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
-        selected_mr_datefrom=st.selectbox("Select a start date", df2['Date'].unique())
-        selected_mr_dateto=st.selectbox("Select a end date", df2['Date'].unique())
+        st.container():
+            selected_mr_model = st.selectbox("Select a line", df2['Line'].unique())
+            selected_mr_datefrom=st.selectbox("Select a start date", df2['Date'].unique())
+            selected_mr_dateto=st.selectbox("Select a end date", df2['Date'].unique())
         df2mr = df2[(df2['Line'] == selected_mr_model) & (df2['Date'].between(selected_mr_datefrom, selected_mr_dateto))]
         total_cost = df2mr['Price'].sum()
         df21 = df2[df2['Date'].between(selected_mr_datefrom, selected_mr_dateto)]
@@ -26,6 +28,7 @@ with col1:
         })
         st.write(f"Total Material Return Cost for {selected_mr_model} from {selected_mr_datefrom} to {selected_mr_dateto}: ${total_cost:,.2f}")
         df_pie = pd.concat([top5, others], ignore_index=True)
+        st.divider()
         plt.figure(figsize=(3, 3))
         bars=plt.bar(df2total['Line'], df2total['Price'], color='skyblue', edgecolor='black', width=0.4)
         for bar in bars:
@@ -67,7 +70,7 @@ with col1:
         plt.tight_layout()
         st.pyplot(plt)        
 with col2: 
-    
+    st.divider()
     cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
     df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
     
@@ -185,6 +188,7 @@ with col2:
     plt.tight_layout()
     st.pyplot(plt)
     st.markdown(f"### Tổng chi phí: {total_cost:,.5f} $USD")
+
 
 
 
