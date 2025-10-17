@@ -1,103 +1,126 @@
-import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
+import streamlit as st
+import matplotlib.pyplot as plt
 
-st.set_page_config(layout="wide")
-st.title("Cycle Time Analysis App")
-
-# Step 1: Upload file
-uploaded_file = st.file_uploader("Upload CSV or Excel file", type=["csv", "xlsx"])
-
-if uploaded_file:
-    # Step 2: Đọc file
-    try:
-        if uploaded_file.name.endswith(".csv"):
-            df = pd.read_csv(uploaded_file)
+col1,col2=st.columns([1,1])
+with col1:
+    st.write("""This app was developed by Khổng Trung Duy - Certified Six Sigma Black Belt""")
+    st.write("""American Society for Quality (ASQ)- ID: 26844""")
+with col2: 
+    st.set_page_config(page_title="MR USD Dollar Cost Analysis")
+    cost_file="https://github.com/DuyKhong94/1/blob/main/Material%20saving%20study%20cost%20Oct2024.xlsb?raw=true"
+    df = pd.read_excel(cost_file, engine='pyxlsb', sheet_name='Sheet1')
+    
+    df.columns = df.columns.str.lower().str.strip().str.replace(' ', '_')
+    df['unit_price'] = pd.to_numeric(df['unit_price'], errors='coerce')
+    df = df.dropna(subset=['unit_price', 'item','description'])
+    df = df.drop_duplicates(subset='item', keep='first')
+    df['item'] = df['item'].astype(str).str.strip().str.lstrip("'").str.upper()
+    df_cleaned= df[['item','description','unit_price']].copy()
+    
+    st.title("MR USD Dollar Cost Analysis")
+    col1,col2=st.columns(2)
+    with col1:
+        item_number = st.text_input("nhập mã linh kiện").strip().upper()
+    with col2:
+        quantity = st.number_input("nhập số lượng", min_value=1, value=1, step=1)
+        
+    if st.button('📌 Tra cứu'):
+        result = df[df['item'] == item_number]
+        if not result.empty:
+            price = result.iloc[0]['unit_price']
+            desc = result.iloc[0]['description']
+            total = price * quantity
+    
+            st.success(f"✅ Đã tìm thấy mã: `{item_number}`")
+            st.write(f"📦 **Mô tả**: {desc}")
+            st.write(f"💵 **Đơn giá**: {price:,.0f} $USD")
+            st.write(f"🧾 **Thành tiền**: {total:,.0f} $USD")
+    
+            # Ghi vào lịch sử tra cứu
+            if "history" not in st.session_state:
+                st.session_state.history = []
+    
+            st.session_state.history.append({
+                "Mã linh kiện": item_number,
+                "Mô tả": desc,
+                "Đơn giá ($USD)": price,
+                "Số lượng": quantity,
+                "Thành tiền ($USD)": total
+            })
         else:
-            df = pd.read_excel(uploaded_file)
-    except Exception as e:
-        st.error(f"Error reading file: {e}")
-        st.stop()
-
-   # # Step 3: Kiểm tra cột cần thiết
-   # required_cols = ['time', 'test_result']
-   # if not all(col in df.columns for col in required_cols):
-   #     st.error("File must contain columns: 'time' and 'test_result'")
-   #     st.stop()
-
-    # Step 4: Tiền xử lý
-    df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
-    df['test_result'] = df['test_result'].astype(str).str.strip().str.upper()
-    total_passed = (df['test_result'] == 'PASSED').sum()
-    total_failed = (df['test_result'] == 'FAILED').sum()
-
-    df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    df['CT'] = df['time'].diff().dt.total_seconds()
-    df_filtered = df[(df['CT'] < 65) & (df['CT'] > 15)]
-
-    mean_ct = df_filtered['CT'].mean()
-    median_ct = df_filtered['CT'].median()
-    q1 = np.percentile(df_filtered['CT'], 25)
-    q3 = np.percentile(df_filtered['CT'], 75)
-    lw = np.percentile(df_filtered['CT'], 2.5)
-    upp = np.percentile(df_filtered['CT'], 97.5)
-    est_output_per_hour = int(round(3600 / mean_ct)) if mean_ct else 0
-
-    # Step 5: Thông tin tổng quan
-    st.subheader("📊 Summary")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Total Passed", total_passed)
-    col2.metric("Total Failed", total_failed)
-    col3.metric("Estimated Output/hour", est_output_per_hour)
-
-    # Step 6: Biểu đồ
-    fig, axs = plt.subplots(2, 2, figsize=(14, 8))
-
-    # Biểu đồ Passed vs Failed
-    colors = ['green', 'red']
-    bars = axs[0, 0].bar(['PASSED', 'FAILED'], [total_passed, total_failed], color=colors)
-    axs[0, 0].set_title("Total Passed and Failed")
-    axs[0, 0].set_ylim(0, max(total_passed, total_failed) + 100)
+            st.error("❌ Không tìm thấy mã linh kiện.")
+    col3,col4=st.columns(2)
+    with col3:
+        model_number = st.text_input("nhập mã model").strip().upper()
+    with col4:
+        job_quantity = st.number_input("nhập số lượng job", min_value=1, value=1, step=1)
+    if st.button('📌 Tra cứu giá console'):
+        result1 = df[df['item'] == model_number]
+        if not result1.empty:
+            price = result1.iloc[0]['unit_price']
+            total = price * job_quantity
+    
+            st.success(f"✅ Đã tìm thấy mã: `{model_number}`")
+            st.write(f"💵 **Đơn giá**: {price:,.0f} $USD")
+            st.write(f"🧾 **Thành tiền**: {total:,.0f} $USD")
+    
+            # Ghi vào lịch sử tra cứu
+            if "history1" not in st.session_state:
+                st.session_state.history1 = []
+    
+            st.session_state.history1.append({
+                "Mã console": model_number,
+                "Mô tả": "Giá console",
+                "Đơn giá ($USD)": price,
+                "Số lượng": job_quantity,
+                "Thành tiền ($USD)": total
+            })
+        else:
+            st.error("❌ Không tìm thấy mã console.")
+    # Hiển thị lịch sử nếu có
+    if "history" in st.session_state and st.session_state.history:
+        st.markdown("---")
+        st.subheader("📋 Lịch sử tra cứu linh kiện")
+        df_history = pd.DataFrame(st.session_state.history)
+        st.dataframe(df_history, use_container_width=True)
+    if "history1" in st.session_state and st.session_state.history1:
+        st.markdown("---")
+        st.subheader("📋 Lịch sử tra cứu giá console")
+        df_history1 = pd.DataFrame(st.session_state.history1)
+        st.dataframe(df_history1, use_container_width=True)
+    item_list=df_history['Mã linh kiện'].unique().tolist()
+    total_cost = df_history['Thành tiền ($USD)'].sum()
+    total_job_cost = df_history1['Thành tiền ($USD)'].sum()
+    
+    plt.figure(figsize=(12, 6))
+    plt.subplot(2, 2, 1)
+    bars=plt.bar(item_list, df_history.groupby('Mã linh kiện')['Thành tiền ($USD)'].sum().loc[item_list])
     for bar in bars:
-        axs[0, 0].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 5,
-                       str(bar.get_height()), ha='center', fontsize=11)
-
-    # Line chart CT
-    axs[0, 1].plot(df_filtered['CT'].values, marker='o', markersize=3,
-                   label=f'Output/hour ≈ {est_output_per_hour}')
-    axs[0, 1].axhline(mean_ct, color='red', label=f'Mean = {mean_ct:.2f}s')
-    axs[0, 1].set_ylim(0, 100)
-    axs[0, 1].set_title("Cycle Time Statistics")
-    axs[0, 1].legend(fontsize=9, loc='upper right')
-
-    # Histogram
-    axs[1, 0].hist(df_filtered['CT'].dropna(), bins=30, color='skyblue', edgecolor='black')
-    axs[1, 0].axvline(mean_ct, color='red', linestyle='--', label=f'Mean = {mean_ct:.2f}')
-    axs[1, 0].axvline(median_ct, color='orange', linestyle='--', label=f'Median = {median_ct:.2f}')
-    axs[1, 0].axvline(lw, color='black', linestyle='--', label=f'Low = {lw:.2f}')
-    axs[1, 0].axvline(upp, color='black', linestyle='--', label=f'High = {upp:.2f}')
-    axs[1, 0].set_title("Cycle Time Distribution")
-    axs[1, 0].legend(fontsize=9)
-
-    # Boxplot
-    axs[1, 1].boxplot(df_filtered['CT'], vert=True, patch_artist=True)
-    axs[1, 1].axhline(median_ct, color='red', linestyle='--', label=f'Median = {median_ct:.2f}')
-    axs[1, 1].axhline(q1, color='black', linestyle='--', label=f'Q1 = {q1:.2f}')
-    axs[1, 1].axhline(q3, color='black', linestyle='--', label=f'Q3 = {q3:.2f}')
-    axs[1, 1].set_title("Cycle Time Boxplot")
-    axs[1, 1].legend(fontsize=9)
-
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.0f}", ha='center', va='bottom')
+    plt.title("Chi phí theo mã linh kiện")
+    plt.xlabel("Mã linh kiện")
+    plt.ylabel("Thành tiền ($USD)")
+    
+    plt.subplot(2, 2, 2)
+    bars1 = plt.bar(['Tổng giá trị', 'Total scrapped'], [total_job_cost,total_cost], color=['blue', 'red'])
+    for bar in bars1:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval, f"{yval:,.0f}", ha='center', va='bottom')
+    plt.title("Chi phí scrap tính theo tổng giá trị job")
+    plt.ylabel("USD$")
+    plt.subplot(2,2,3)
+    plt.pie([total_job_cost, total_cost], labels=['Tổng giá trị', 'Total scrapped'], autopct='%1.1f%%', startangle=90)
+    plt.title("Tỷ lệ chi phí tổng giá trị và tổng chi phí scrap")
+    
+    plt.legend(
+        labels=['Tổng giá trị', 'Total scrapped'],
+        loc='upper left',
+        bbox_to_anchor=(1, 1),  # đưa legend sang bên phải
+        frameon=False
+    )
     plt.tight_layout()
-    st.pyplot(fig)
-
-    # Step 7: Bảng dữ liệu lọc
-    st.subheader("Raw Data")
-    st.dataframe(df_filtered)
-
-    # Step 8: Tải bảng kết quả
-    csv = df_filtered.to_csv(index=False).encode('utf-8')
-    st.download_button("📥 Download filtered data as CSV",
-                       csv,
-                       "filtered_ct_data.csv",
-                       "text/csv")
+    st.pyplot(plt)
+    st.markdown(f"### Tổng chi phí: {total_cost:,.0f} $USD")
