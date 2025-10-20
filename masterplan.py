@@ -170,7 +170,7 @@ with col3:
         startangle=90,
         counterclock=False
         )
-        plt.title("AC PK BW Scrap Contribute by Leader")
+        plt.title("AC PK BW Annual Scrap Contribute by Leader")
         plt.legend(
         df_pie["Leader"],
         loc="lower center",
@@ -180,6 +180,7 @@ with col3:
         )
         plt.tight_layout()
         st.pyplot(plt)
+
 
 
 
